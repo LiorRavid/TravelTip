@@ -1,9 +1,13 @@
 
+
+
 export const mapService = {
     initMap,
     addMarker,
     panTo,
-    requestLocation
+    requestLocation,
+    requestAddress,
+    requestWeather
 }
 
 var gMap;
@@ -19,13 +23,17 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                     center: { lat, lng },
                     zoom: 15
                 })
-            console.log('Map!', gMap);
-        })
+            return gMap;
+        });
+
 }
 
+
 function addMarker(loc) {
+    const custom = './img/pin.png';
     var marker = new google.maps.Marker({
         position: loc,
+        icon: custom,
         map: gMap,
         title: 'Hello World!'
     });
@@ -60,5 +68,23 @@ function requestLocation(value) {
         .then(ans => {
             console.log(ans.results[0]);
             return ans.results[0];
+        })
+}
+
+function requestAddress(lat, lng) {
+    return fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyCR2FrNA9Lm9Y3wl05H8a8voaMYD732bNg`)
+        .then(res => res.json())
+        .then(ans => {
+            console.log(ans.results[0]);
+            return ans.results[0];
+        })
+}
+
+function requestWeather(lat, lng) {
+    return fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&APPID=f95c4d5480f7db9d35bad95632d5e467`)
+        .then(res => res.json())
+        .then(ans => {
+            console.log(ans);
+            return ans;
         })
 }
