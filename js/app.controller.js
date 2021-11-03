@@ -7,6 +7,8 @@ window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onSearch = onSearch;
+window.onGoLocation = onGoLocation;
+window.onDeleteLocation = onDeleteLocation;
 
 function onInit() {
     mapService.initMap()
@@ -35,7 +37,8 @@ function onGetLocs() {
     locService.getLocs()
         .then(locs => {
             console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs)
+            renderLocationTable(locs)
+                // document.querySelector('.locs').innerText = JSON.stringify(locs)
         })
 }
 
@@ -60,4 +63,30 @@ function onPanTo() {
 function onSearch() {
     let value = document.querySelector('.search-bar input').value
     console.log(value);
+}
+
+function renderLocationTable(locations) {
+    var strHtmls = locations.map((location) => {
+        return `<tr>
+        <td class="${location.name}">${location.name}</td>
+        <td class= "actions-container">
+        <button class= "action-btn go-btn" onclick= "onGoLocation(${location.lat},${location.lng})">Go</button>
+        <button class= "action-btn delete-btn" onclick = "onDeleteLocation('${location.name}')">Delete</button> 
+        </tr>`
+    });
+
+    document.querySelector('.locations-content').innerHTML = strHtmls.join('')
+}
+
+function onGoLocation(locLat, locLng) {
+    mapService.panTo(locLat, locLng)
+}
+
+function onDeleteLocation(locName) {
+    console.log('delete');
+    locService.removeLocation(locName)
+    locService.getLocs()
+        .then(locs => {
+            renderLocationTable(locs)
+        })
 }

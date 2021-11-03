@@ -39,3 +39,39 @@ article {
 .locations {
     border: 1px solid black;
 }
+
+.locations-table {
+    width: 100%;
+    background-color: white;
+}
+
+th {
+    background-color: white;
+    border: 1px solid rgb(114, 114, 114);
+}
+
+td {
+    border: 1px solid rgb(114, 114, 114);
+}
+
+.actions-container {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 5px;
+}
+
+.action-btn {
+    width: 100%;
+}
+
+.go-btn {
+    background-color: rgb(173, 143, 97);
+    color: whitesmoke;
+}
+
+.delete-btn {
+    background-color: rgb(231, 48, 48);
+    color: whitesmoke;
+}
