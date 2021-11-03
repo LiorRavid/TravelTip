@@ -17,7 +17,7 @@ function onInit() {
         })
         .catch(() => console.log('Error: cannot init map'));
 
-    mapService.requestGeoCode();
+
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -37,8 +37,7 @@ function onGetLocs() {
     locService.getLocs()
         .then(locs => {
             console.log('Locations:', locs)
-            renderLocationTable(locs)
-                // document.querySelector('.locs').innerText = JSON.stringify(locs)
+            document.querySelector('.locs').innerText = JSON.stringify(locs)
         })
 }
 
@@ -62,7 +61,7 @@ function onPanTo() {
 
 function onSearch() {
     let value = document.querySelector('.search-bar input').value
-    console.log(value);
+    mapService.requestLocation(value).then(renderLocation);
 }
 
 function renderLocationTable(locations) {
@@ -92,5 +91,13 @@ function onDeleteLocation(locName) {
 }
 
 function onCopyLocation(){
-    
+
+}
+
+function renderLocation(result) {
+    let name = result.formatted_address;
+    let location = result.geometry.location;
+    mapService.panTo(location.lat, location.lng);
+    console.log(name);
+    locService.addLoc(location, name, '');
 }
