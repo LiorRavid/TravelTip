@@ -1,13 +1,15 @@
-// import { storageService } from './services/storage.service.js'
+const LOC_KEY = 'locData'
+
+import { storageService } from './storage.service.js'
 
 export const locService = {
     getLocs,
     removeLocation,
-    addLoc
+    addLoc,
+    getLastLocation
 }
 
-// const LOC_KEY = 'locData'
-
+var url
 
 var locs = [
     createLoc('Greatplace', { lat: 32.047104, lng: 34.832384 }, ''),
@@ -16,10 +18,9 @@ var locs = [
 ]
 
 
-// console.log('locs', locs);
-
 function getLocs() {
-    // if(!locs[0].id) return Promise.resolve(termVideosMap[term])
+    const locations = storageService.load(LOC_KEY) || [];
+    if(locations)return Promise.resolve(locations)
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(locs);
@@ -27,13 +28,26 @@ function getLocs() {
     });
 }
 
+function getLastLocation(){
+    return saveLink(locs[locs.length-1])
+}
+
+// `https://liorravid.github.io/TravelTip/
+
+function saveLink(loc){
+    return url = `http://127.0.0.1:5501/index.html?lat=${loc.lat}&lng=${loc.lng}` 
+}
+
+
 function removeLocation(locName) {
     if (!locName) return;
     let locIdx = locs.findIndex(loc => loc.name === locName);
     locs.splice(locIdx, 1);
+    storageService.save(LOC_KEY, locs);
+
 }
 
-function createLoc(location, name, weather) {
+function createLoc(name,location, weather) {
     return {
         id: _makeId(),
         name,
@@ -45,9 +59,14 @@ function createLoc(location, name, weather) {
     };
 }
 
-function addLoc(location, name, weather) {
-    locs.push(createLoc(location, name, weather));
-    // saveToStorage(KEY, locs);
+function addLoc(name,location, weather) {
+    console.log('name',name);
+    var isLoc = locs.find((loc)=>{
+        return(loc.name === name)
+    })
+    if(isLoc)return
+    locs.push(createLoc(name,location, weather));
+    storageService.save(LOC_KEY, locs);
 }
 
 function _makeId(length = 4) {

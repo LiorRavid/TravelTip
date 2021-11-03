@@ -1,4 +1,3 @@
-// import { storageService } from './services/storage.service.js'
 
 export const mapService = {
     initMap,

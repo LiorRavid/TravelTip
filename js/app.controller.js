@@ -9,15 +9,24 @@ window.onGetUserPos = onGetUserPos;
 window.onSearch = onSearch;
 window.onGoLocation = onGoLocation;
 window.onDeleteLocation = onDeleteLocation;
+window.onCopyLocation = onCopyLocation;
+window.goToInitMap = goToInitMap;
+
 
 function onInit() {
-    mapService.initMap()
-        .then(() => {
-            console.log('Map is ready');
-        })
-        .catch(() => console.log('Error: cannot init map'));
+    const urlParams = new URLSearchParams(window.location.search);
+    const latParam = urlParams.get('lat')
+    const lngParam = urlParams.get('lng')
+    if(!latParam) goToInitMap(undefined,undefined)
+    else goToInitMap(+latParam , +lngParam)
+}
 
-
+function goToInitMap(lat,lng){
+    mapService.initMap(lat , lng)
+    .then(() => {
+        console.log('Map is ready');
+    })
+    .catch(() => console.log('Error: cannot init map'));
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -36,8 +45,8 @@ function onAddMarker() {
 function onGetLocs() {
     locService.getLocs()
         .then(locs => {
-            console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs)
+            console.log('locs',locs);
+            renderLocationTable(locs)
         })
 }
 
@@ -58,6 +67,7 @@ function onPanTo() {
     console.log('Panning the Map');
     mapService.panTo(35.6895, 139.6917);
 }
+
 
 function onSearch() {
     let value = document.querySelector('.search-bar input').value
@@ -91,7 +101,10 @@ function onDeleteLocation(locName) {
 }
 
 function onCopyLocation(){
-
+    const copyUrl = locService.getLastLocation()
+    var currHref = document.querySelector('.copied-url')
+    currHref.setAttribute('href', copyUrl);
+    document.querySelector('.copied-url').innerText = copyUrl ;
 }
 
 function renderLocation(result) {
@@ -99,5 +112,6 @@ function renderLocation(result) {
     let location = result.geometry.location;
     mapService.panTo(location.lat, location.lng);
     console.log(name);
-    locService.addLoc(location, name, '');
+    locService.addLoc(name,location, '');
+    onGetLocs()
 }
