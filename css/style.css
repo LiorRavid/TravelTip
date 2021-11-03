@@ -1,5 +1,6 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(204, 233, 243);
 }
 
 .main-header {
@@ -38,6 +39,7 @@ article {
 
 .weather-container {
     border: 1px solid black;
+    text-align: center;
 }
 
 .locations {
@@ -46,11 +48,9 @@ article {
 
 .locations-table {
     width: 100%;
-    background-color: white;
 }
 
 th {
-    background-color: white;
     border: 1px solid rgb(114, 114, 114);
 }
 
@@ -78,4 +78,8 @@ td {
 .delete-btn {
     background-color: rgb(231, 48, 48);
     color: whitesmoke;
+}
+
+.location-url {
+    text-align: right;
 }

@@ -21,8 +21,7 @@
         </header>
         <section class="location-container">
             <p>You are at: <span class="user-pos"></span></p>
-            <button class="copy-location-btn" onclick="onCopyLocation()">Copy Location</button>
-            <p>Copied URL: <a class = "copied-url" href=""></a></p>
+            <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
         </section>
         <section class="main-content">
             <article>
@@ -46,11 +45,15 @@
             <div id="map"></div>
 
 
-
         </section>
-
+        <div class="location-url">
+            <button class="copy-location-btn" onclick="onCopyLocation()">Copy Location</button>
+            <p>
+                <a class="copied-url" href=""></a>
+            </p>
+        </div>
     </section>
-    <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
+
 
     <!-- <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button> -->
     <!-- <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button> -->

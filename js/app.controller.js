@@ -19,15 +19,16 @@ function onInit() {
     const urlParams = new URLSearchParams(window.location.search);
     const latParam = urlParams.get('lat')
     const lngParam = urlParams.get('lng')
-    if(!latParam) goToInitMap(undefined,undefined)
-    else goToInitMap(+latParam , +lngParam)
+    if (!latParam) goToInitMap(undefined, undefined)
+    else goToInitMap(+latParam, +lngParam)
 }
 
-function goToInitMap(lat,lng){
-    mapService.initMap(lat , lng)
+function goToInitMap(lat, lng) {
+    mapService.initMap(lat, lng)
     mapService.initMap()
         .then((map) => {
             map.addListener("click", (mapsMouseEvent) => {
+                debugger
                 let chosenLoc = mapsMouseEvent.latLng.toJSON();
                 console.log('chosenLoc', chosenLoc);
                 mapService.requestAddress(chosenLoc.lat, chosenLoc.lng).then(renderLocation);
@@ -59,7 +60,7 @@ function onAddMarker() {
 function onGetLocs() {
     locService.getLocs()
         .then(locs => {
-            console.log('locs',locs);
+            console.log('locs', locs);
             renderLocationTable(locs)
         })
 }
@@ -68,8 +69,7 @@ function onGetUserPos() {
     getPosition()
         .then(pos => {
             console.log('User position is:', pos.coords);
-            document.querySelector('.user-pos').innerText =
-                `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+            document.querySelector('.user-pos').innerText = mapService.requestAddress(pos.coords.latitude, pos.coords.longitude).then(res => updateTxtLoc(res.formatted_address));
             currLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
             mapService.panTo(pos.coords.latitude, pos.coords.longitude);
             mapService.requestWeather(currLocation.lat, currLocation.lng).then(renderWeather);
@@ -120,11 +120,11 @@ function onDeleteLocation(locName) {
         })
 }
 
-function onCopyLocation(){
+function onCopyLocation() {
     const copyUrl = locService.getLastLocation()
     var currHref = document.querySelector('.copied-url')
     currHref.setAttribute('href', copyUrl);
-    document.querySelector('.copied-url').innerText = copyUrl ;
+    document.querySelector('.copied-url').innerText = copyUrl;
 }
 
 function renderLocation(result) {
@@ -136,7 +136,7 @@ function renderLocation(result) {
     mapService.requestWeather(currLocation.lat, currLocation.lng).then(renderWeather);
     updateTxtLoc(name);
     console.log(name);
-    locService.addLoc(name,location, '');
+    locService.addLoc(name, location, '');
     onGetLocs()
 }
 
