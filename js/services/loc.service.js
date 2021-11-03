@@ -33,7 +33,7 @@ function removeLocation(locName) {
     locs.splice(locIdx, 1);
 }
 
-function createLoc(location, name, weather) {
+function createLoc(name, location, weather) {
     return {
         id: _makeId(),
         name,
@@ -45,8 +45,8 @@ function createLoc(location, name, weather) {
     };
 }
 
-function addLoc(location, name, weather) {
-    locs.push(createLoc(location, name, weather));
+function addLoc(name, location, weather) {
+    locs.push(createLoc(name, location, weather));
     // saveToStorage(KEY, locs);
 }
 
