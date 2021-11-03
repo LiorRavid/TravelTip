@@ -7,8 +7,6 @@ window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 window.onSearch = onSearch;
-window.onGoLocation = onGoLocation;
-window.onDeleteLocation = onDeleteLocation;
 
 function onInit() {
     mapService.initMap()
@@ -17,7 +15,7 @@ function onInit() {
         })
         .catch(() => console.log('Error: cannot init map'));
 
-    mapService.requestGeoCode();
+
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -37,8 +35,7 @@ function onGetLocs() {
     locService.getLocs()
         .then(locs => {
             console.log('Locations:', locs)
-            renderLocationTable(locs)
-                // document.querySelector('.locs').innerText = JSON.stringify(locs)
+            document.querySelector('.locs').innerText = JSON.stringify(locs)
         })
 }
 
@@ -62,31 +59,13 @@ function onPanTo() {
 
 function onSearch() {
     let value = document.querySelector('.search-bar input').value
-    console.log(value);
+    mapService.requestLocation(value).then(renderLocation);
 }
 
-function renderLocationTable(locations) {
-    var strHtmls = locations.map((location) => {
-        return `<tr>
-        <td class="${location.name}">${location.name}</td>
-        <td class= "actions-container">
-        <button class= "action-btn go-btn" onclick= "onGoLocation(${location.lat},${location.lng})">Go</button>
-        <button class= "action-btn delete-btn" onclick = "onDeleteLocation('${location.name}')">Delete</button> 
-        </tr>`
-    });
-
-    document.querySelector('.locations-content').innerHTML = strHtmls.join('')
-}
-
-function onGoLocation(locLat, locLng) {
-    mapService.panTo(locLat, locLng)
-}
-
-function onDeleteLocation(locName) {
-    console.log('delete');
-    locService.removeLocation(locName)
-    locService.getLocs()
-        .then(locs => {
-            renderLocationTable(locs)
-        })
+function renderLocation(result) {
+    let name = result.formatted_address;
+    let location = result.geometry.location;
+    mapService.panTo(location.lat, location.lng);
+    console.log(name);
+    locService.addLoc(location, name, '');
 }

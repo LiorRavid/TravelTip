@@ -2,7 +2,7 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
-    requestGeoCode
+    requestLocation
 }
 
 var gMap;
@@ -52,11 +52,11 @@ function _connectGoogleApi() {
     })
 }
 
-function requestGeoCode() {
-    return fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCR2FrNA9Lm9Y3wl05H8a8voaMYD732bNg`)
+function requestLocation(value) {
+    return fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${value}&key=AIzaSyCR2FrNA9Lm9Y3wl05H8a8voaMYD732bNg`)
         .then(res => res.json())
         .then(ans => {
-            console.log(ans);
-            return ans;
+            console.log(ans.results[0]);
+            return ans.results[0];
         })
 }
