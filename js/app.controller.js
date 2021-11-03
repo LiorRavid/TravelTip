@@ -90,3 +90,7 @@ function onDeleteLocation(locName) {
             renderLocationTable(locs)
         })
 }
+
+function onCopyLocation(){
+    
+}

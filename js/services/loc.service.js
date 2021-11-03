@@ -1,8 +1,11 @@
+// import { storageService } from './services/storage.service.js'
+
 export const locService = {
     getLocs,
     removeLocation
 }
 
+// const LOC_KEY = 'locData'
 
 
 var locs = [
@@ -11,9 +14,11 @@ var locs = [
     { name: 'Finberg', lat: 32.43233612843791, lng: 34.92161845083531 }
 ]
 
-console.log('locs', locs);
+
+// console.log('locs', locs);
 
 function getLocs() {
+    // if(!locs[0].id) return Promise.resolve(termVideosMap[term])
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(locs);
