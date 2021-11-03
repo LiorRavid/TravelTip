@@ -1,0 +1,41 @@
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.location-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-content {
+    gap: 30px;
+    display: flex;
+}
+
+article {
+    gap: 20px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+#map {
+    width: 50%;
+    height: 400px;
+}
+
+.weather-container {
+    border: 1px solid black;
+}
+
+.locations {
+    border: 1px solid black;
+}
